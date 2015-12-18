@@ -4,8 +4,9 @@ email: bmagamb@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   Research articles and guides for Emacs users and package developers.
 baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://yourdomain.com" # the base hostname & protocol for your site
+url: "https://bmag.github.io" # the base hostname & protocol for your site
 github_username:  bmag
 
 # Build settings
+excerpt_separator: ""   # Workaround for https://github.com/mojombo/jekyll/issues/1401
 markdown: kramdown
