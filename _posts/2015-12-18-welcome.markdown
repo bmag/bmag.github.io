@@ -1,0 +1,10 @@
+---
+layout: post
+title:  "Welcome"
+date:   2015-12-18 16:10:00
+---
+
+Welcome to Emacs Synergy, a new website (blog?) about Emacs and its Ecosystem.
+In Emacs Synergy, I will try to explain how various features and packages work,
+how they can benefit your workflow, and how you can leverage them in your next
+package (if you're a package developer).  See [about](/about/) for more.
