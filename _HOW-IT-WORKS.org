@@ -1,0 +1,87 @@
+#+TITLE: How it Works
+
+The purpose of this document is to explain how to write articles and preview the
+website locally.
+
+* Getting Started
+** Clone the Website's Repository
+** Install Jekyll Requirements
+   The website is statically genretaed by Jekyll. The requirements are detailed
+   on [[https://help.github.com/articles/setting-up-your-github-pages-site-locally-with-jekyll/][GitHub]]. The short version of the instructions is:
+   1. install ruby (version 2.0.0 or higher)
+   2. install bundler: ~gem install bundler~
+   3. install Jekyll and dependencies: ~bundle install~ (run from repo's root)
+** Run the Website Locally
+   The following command should serve the website on the local host, port 4000.
+   #+BEGIN_SRC sh
+     bundle exec jekyll serve -H 127.0.0.1
+   #+END_SRC
+** Keeping Jekyll Requirements Up to Date
+   See [[https://help.github.com/articles/setting-up-your-github-pages-site-locally-with-jekyll/#keeping-your-site-up-to-date-with-the-github-pages-gem][instructions on GitHub]]. In short, run ~bundle update github-pages~ or
+   ~bundle update~.
+
+* Writing Articles in Markdown
+  To write articles in Markdown format, you need to save the files in the
+  ~_posts~ directory. The files also need proper names and front matter. Jekyll
+  will convert them to html and publish them to the destination directory (~_site~).
+* Writing Articles in Org Mode
+** Process
+   The workflow for writing Articles in Org is based on
+   [[http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html][org-tutuorials/org-publish-html-tutorial]] and [[http://orgmode.org/worg/org-tutorials/org-jekyll.html][org-tutorials/org-jekyll]].
+
+   To write articles in Org, you need to save the files
+   in the ~_org/_posts~ directory. The files also need proper names, and must
+   contain front matter for Jekyll:
+   #+BEGIN_SRC org
+     ,#+STARTUP: showall indent
+     ,#+STARTUP: hidestars
+     ,#+BEGIN_HTML
+     ---
+     layout: default
+     title: Benighted on the Ben.
+     excerpt: An unplanned bivouac on Ben Nevis.
+     ---
+     ,#+END_HTML
+     It was early January when six of us travelled up to ....
+   #+END_SRC
+
+   Next, you need to configre Org's publishing tool to publish the contents of
+   ~_org~ directory to the repo's root. That way, all the Org files in
+   ~_org/_posts~ are converted to HTML files in ~_posts~, which Jekyll can then
+   publish. The configuration is done via ~org-publish-project-alist~, and here's
+   how to do it:
+   #+BEGIN_SRC elisp
+     (require 'ox-publish)
+
+     (setq org-publish-project-alist
+           '(
+             ;; export all Org files to HTML
+             ("emacs-synergy-articles"
+              :base-directory "/path/to/repo/root/_org/"
+              :base-extension "org"
+              :publishing-directory "/path/to/repo/root/"
+              :recursive t
+              :publishing-function org-html-publish-to-html
+              :headline-levels 4
+              :html-extension "html"
+              :body-only t)
+
+             ;; export resource files as-is (e.g. images)
+             ("emacs-synergy-static"
+              :base-directory "/path/to/repo/root/_org/"
+              :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+              :publishing-directory "/path/to/repo/root/"
+              :recursive t
+              :publishing-function org-publish-attachment)
+
+             ("emacs-synergy" :components ("emacs-synergy-articles" "emacs-synergy-static"))
+             ))
+   #+END_SRC
+ 
+   Of course, if you already have a prior ~org-publish-project-alist~
+   configuration, you should adapt the above code as necessary.
+
+   To publish the Org article to HTML, call ~M-x org-publish-project~ and choose
+   ~emacs-synergy~.
+** TODO Caveats
+   - [ ] the generated html doesn't have the site's colors (e.g. in code snippets)
